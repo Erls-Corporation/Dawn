@@ -1,0 +1,4 @@
+
+2010-12-07
+By: islands
+Initial goal is to create a real time scraper/parser/data feed for stocks/options available on public sites such as Yahoo/Google Finance.  Will add an ant (ant.apache.org) build manifest.
