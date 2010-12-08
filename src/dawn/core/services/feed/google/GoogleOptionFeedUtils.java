@@ -24,9 +24,9 @@ public class GoogleOptionFeedUtils {
         Double myChange = null;
         Integer myQuantity = null;
         Integer myOpenInterest = null;
-        
 
         String[] myGoogleStatusTokens = aGoogleMarket.split(",");
+
         for (String myOutput : myGoogleStatusTokens) {
             if (myOutput.contains("vol:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
@@ -79,8 +79,7 @@ public class GoogleOptionFeedUtils {
                     && myPrice != null
                     && myChange != null
                     && myQuantity != null 
-                    && myOpenInterest != null
-                ) {
+                    && myOpenInterest != null ) {
             OptionMarket myOptionMarket = 
                 new OptionMarket(
                     myOptionType,

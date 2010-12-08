@@ -18,8 +18,7 @@ public class OptionMarket extends Market {
                 double aPrice,
                 double aChange,
                 int aQuantity,
-                int aOpenInterest
-            ) {
+                int aOpenInterest ) {
         super(aBidQuote, aAskQuote);
         theType = aType;
         theStrike = aStrike;
