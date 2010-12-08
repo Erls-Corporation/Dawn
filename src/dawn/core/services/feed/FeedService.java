@@ -24,7 +24,7 @@ public class FeedService {
         theFeedExecutor.shutdown();
 
         for (Feed myFeed : theFeedList) {
-            myFeed.stop();
+            myFeed.stopFeed();
         }
     }
 
