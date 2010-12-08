@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
 import dawn.core.services.feed.FeedService;
-import dawn.core.strategy.StrategyService;
+import dawn.core.subscriber.SubscriberService;
 
 public class Core {
     public static void main(String[] args) {
@@ -28,7 +28,7 @@ public class Core {
         }
 
         FeedService.getInstance().start();
-        StrategyService.getInstance().start();
+        SubscriberService.getInstance().start();
 
         try {
             Thread.sleep(TimeUnit.SECONDS.toMillis(11));
@@ -36,7 +36,7 @@ public class Core {
             e.printStackTrace();
         }
 
-        StrategyService.getInstance().stop();
+        SubscriberService.getInstance().stop();
         FeedService.getInstance().stop();
     }
 }

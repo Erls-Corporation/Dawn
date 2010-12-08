@@ -4,9 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 import dawn.core.data.market.option.OptionMarketSnapshot;
 import dawn.core.services.feed.google.GoogleOptionFeed;
-import dawn.user.strategy.Strategy;
+import dawn.user.subscriber.Subscriber;
 
-public class WindowCore extends Strategy {
+public class WindowCore extends Subscriber {
     private GoogleOptionFeed theGoogleSPYFeed;
 
     private final int TIME_STEP = 5;

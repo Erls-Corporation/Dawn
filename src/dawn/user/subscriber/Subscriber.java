@@ -1,14 +1,14 @@
-package dawn.user.strategy;
+package dawn.user.subscriber;
 
-import dawn.core.strategy.StrategyService;
+import dawn.core.subscriber.SubscriberService;
 
-public abstract class Strategy implements Runnable {
+public abstract class Subscriber implements Runnable {
     private boolean isRunning;
 
-    public Strategy() {
+    public Subscriber() {
         init();
 
-        StrategyService.getInstance().addStrategy(this);
+        SubscriberService.getInstance().addStrategy(this);
     }
 
     public void stopStrategy() {
