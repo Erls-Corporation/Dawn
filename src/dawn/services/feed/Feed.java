@@ -1,5 +1,5 @@
 package dawn.services.feed;
 
-public class Feed {
-
+public abstract class Feed {
+    
 }

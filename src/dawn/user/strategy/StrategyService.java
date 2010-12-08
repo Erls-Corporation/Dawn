@@ -14,7 +14,7 @@ public class StrategyService {
     public StrategyService() {
         theActiveStrategies = new ArrayList<Strategy>();
         
-        this.init();
+        init();
     }
     
     public void init() {

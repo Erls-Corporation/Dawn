@@ -1,9 +1,16 @@
 package dawn.user.strategy.window.core;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import dawn.user.strategy.Strategy;
 
 public class WindowCore implements Strategy {
-    private boolean isRunning = false;
+    private boolean isRunning;
+    
+    public WindowCore() {
+        isRunning = false;
+    }
 
     @Override
     public void run() {
@@ -16,14 +23,20 @@ public class WindowCore implements Strategy {
 
     @Override
     public void stop() {
-        
+        isRunning = false;
     }
     
     private void step() {
-        
+        System.out.println(new Date().toString());
     }
     
     private void pause() {
-        
+        try {
+            Thread.sleep(TimeUnit.SECONDS.toMillis(5));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            
+            isRunning = false;
+        }
     }
 }
