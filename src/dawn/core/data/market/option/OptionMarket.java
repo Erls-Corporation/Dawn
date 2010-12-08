@@ -5,12 +5,29 @@ import dawn.core.data.market.Market;
 public class OptionMarket extends Market {
     private final OptionType theType;
     private final double theStrike;
+    private final double thePrice;
+    private final double theChange;
+    private final int theQuantity;
+    private final int theOpenInterest;
 
-    public OptionMarket(OptionType aType, double aStrike,
-            OptionQuote aBidQuote, OptionQuote aAskQuote) {
+    public OptionMarket(
+    			OptionType aType, 
+    			double aStrike,
+    			OptionQuote aBidQuote, 
+    			OptionQuote aAskQuote,
+    			double aPrice,
+    			double aChange,
+    			int aQuantity,
+    			int aOpenInterest
+			) {
         super(aBidQuote, aAskQuote);
         theType = aType;
         theStrike = aStrike;
+        thePrice = aPrice;
+        theChange = aChange;
+        theQuantity = aQuantity;
+        theOpenInterest = aOpenInterest;
+        
     }
 
     public OptionQuote getBid() {
@@ -27,5 +44,21 @@ public class OptionMarket extends Market {
 
     public OptionType getType() {
         return theType;
+    }
+    
+    public double getPrice() {
+    	return thePrice;
+    }
+    
+    public double getChange() {
+    	return theChange;
+    }
+    
+    public int getQuantity() {
+    	return theQuantity;
+    }
+    
+    public int getOpenInterest() {
+    	return theOpenInterest;
     }
 }

@@ -16,17 +16,19 @@ public class GoogleOptionFeedUtils {
     private static final String URL = "http://www.google.com/finance/option_chain?q=";
 
     private static OptionMarket convertToOptionMarket(String aGoogleMarket) {
-        //TODO: need to parse expiry date as well
-        //TODO: quantity here is also inaccurate
-        Integer myQuantity = null;
         Double myBidPrice = null;
         Double myAskPrice = null;
         Double myStrike = null;
         OptionType myOptionType = null;
+        Double myPrice = null;
+        Double myChange = null;
+        Integer myQuantity = null;
+        Integer myOpenInterest = null;
+        
 
         String[] myGoogleStatusTokens = aGoogleMarket.split(",");
         for (String myOutput : myGoogleStatusTokens) {
-            if (myOutput.contains("vol")) {
+            if (myOutput.contains("vol:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myQuantity = Integer.parseInt(myOutput);
@@ -41,7 +43,7 @@ public class GoogleOptionFeedUtils {
                 if (myOutput.length() > 0) {
                     myAskPrice = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.contains("strike")) {
+            } else if (myOutput.contains("strike:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myStrike = Double.parseDouble(myOutput);
@@ -52,15 +54,45 @@ public class GoogleOptionFeedUtils {
                 } else if (myOutput.contains("P")) {
                     myOptionType = OptionType.PUT;
                 }
+            } else if (myOutput.contains("p:")) {
+                myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
+                if (myOutput.length() > 0) {
+                    myPrice = Double.parseDouble(myOutput);
+                }
+            } else if (myOutput.contains("c:")) {
+                myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
+                if (myOutput.length() > 0) {
+                    myChange = Double.parseDouble(myOutput);
+                }
+            } else if (myOutput.contains("oi:")) {
+                myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
+                if (myOutput.length() > 0) {
+                    myOpenInterest = Integer.parseInt(myOutput);
+                }
             }
         }
-
-        if (myOptionType != null && myBidPrice != null && myAskPrice != null
-                && myQuantity != null && myStrike != null) {
-            OptionMarket myOptionMarket = new OptionMarket(myOptionType,
+        if (
+        			myOptionType != null 
+        			&& myBidPrice != null 
+        			&& myAskPrice != null
+        			&& myStrike != null
+        			&& myPrice != null
+        			&& myChange != null
+        			&& myQuantity != null 
+        			&& myOpenInterest != null
+    			) {
+            OptionMarket myOptionMarket = 
+            	new OptionMarket(
+    				myOptionType,
                     myStrike,
                     new OptionQuote(Side.BID, myQuantity, myBidPrice),
-                    new OptionQuote(Side.ASK, myQuantity, myAskPrice));
+                    new OptionQuote(Side.ASK, myQuantity, myAskPrice),
+                    myPrice,
+                    myChange,
+                    myQuantity,
+            
+                    myOpenInterest
+				);
             return myOptionMarket;
         } else {
             return null;

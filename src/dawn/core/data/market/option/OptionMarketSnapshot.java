@@ -36,16 +36,40 @@ public class OptionMarketSnapshot extends MarketSnapshot {
         System.out.print(Calendar.getInstance().getTime() + "\n");
         System.out.print("Call:\n");
         for (Market myOptionMarket : theCallList) {
-            System.out.print(((OptionMarket) myOptionMarket).getStrike() + ": "
-                    + myOptionMarket.getBid().getPrice() + " - "
-                    + myOptionMarket.getAsk().getPrice() + "\n");
+            System.out.println(
+	        		((OptionMarket) myOptionMarket).getStrike() 
+	        		+ ": Bid-Ask: "
+	                + myOptionMarket.getBid().getPrice() 
+	                + " - "
+	                + myOptionMarket.getAsk().getPrice()
+	                + ", Last: "
+	                + ((OptionMarket) myOptionMarket).getPrice()
+	                + ", Change: "
+	                + ((OptionMarket) myOptionMarket).getChange()
+	                + ", Qty: "
+	                + ((OptionMarket) myOptionMarket).getQuantity()
+	                + ", OpInt: "
+	                + ((OptionMarket) myOptionMarket).getOpenInterest()
+	            );
         }
         System.out.print("\n");
         System.out.print("Put:\n");
         for (Market myOptionMarket : thePutList) {
-            System.out.print(((OptionMarket) myOptionMarket).getStrike() + ": "
-                    + myOptionMarket.getBid().getPrice() + " - "
-                    + myOptionMarket.getAsk().getPrice() + "\n");
+            System.out.println(
+	        		((OptionMarket) myOptionMarket).getStrike() 
+	        		+ ": Bid-Ask: "
+	                + myOptionMarket.getBid().getPrice() 
+	                + " - "
+	                + myOptionMarket.getAsk().getPrice()
+	                + ", Last: "
+	                + ((OptionMarket) myOptionMarket).getPrice()
+	                + ", Change: "
+	                + ((OptionMarket) myOptionMarket).getChange()
+	                + ", Qty: "
+	                + ((OptionMarket) myOptionMarket).getQuantity()
+	                + ", OpInt: "
+	                + ((OptionMarket) myOptionMarket).getOpenInterest()
+                );
         }
         System.out.print("\n\n");
     }
