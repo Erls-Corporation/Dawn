@@ -1,4 +1,4 @@
-package dawn.user.strategy.window.core;
+package dawn.user.subscriber.window.core;
 
 import java.util.concurrent.TimeUnit;
 

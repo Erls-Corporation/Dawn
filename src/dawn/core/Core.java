@@ -9,7 +9,7 @@ import dawn.core.subscriber.SubscriberService;
 public class Core {
     public static void main(String[] args) {
         try {
-            Class.forName("dawn.user.strategy.window.core.WindowCore")
+            Class.forName("dawn.user.subscriber.window.core.WindowCore")
                     .getConstructor(new Class[0]).newInstance(new Object[0]);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

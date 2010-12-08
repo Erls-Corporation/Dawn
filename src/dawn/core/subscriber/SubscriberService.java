@@ -22,21 +22,21 @@ public class SubscriberService {
         theActiveSubscribersExecutor = Executors.newCachedThreadPool();
     }
 
-    public void addStrategy(Subscriber aStrategy) {
-        theActiveSubscribers.add(aStrategy);
+    public void addSubscriber(Subscriber aSubscriber) {
+        theActiveSubscribers.add(aSubscriber);
     }
     
     public void start() {
-        for (Subscriber myStrategy : theActiveSubscribers) {
-            theActiveSubscribersExecutor.execute(myStrategy);
+        for (Subscriber mySubscriber : theActiveSubscribers) {
+            theActiveSubscribersExecutor.execute(mySubscriber);
         }
     }
 
     public void stop() {
         theActiveSubscribersExecutor.shutdown();
 
-        for (Subscriber myStrategy : theActiveSubscribers) {
-            myStrategy.stopStrategy();
+        for (Subscriber mySubscriber : theActiveSubscribers) {
+            mySubscriber.stopSubscription();
         }
     }
 }

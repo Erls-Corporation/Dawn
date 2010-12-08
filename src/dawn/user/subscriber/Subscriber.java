@@ -8,10 +8,10 @@ public abstract class Subscriber implements Runnable {
     public Subscriber() {
         init();
 
-        SubscriberService.getInstance().addStrategy(this);
+        SubscriberService.getInstance().addSubscriber(this);
     }
 
-    public void stopStrategy() {
+    public void stopSubscription() {
         isRunning = false;
     }
 
