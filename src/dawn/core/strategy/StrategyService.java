@@ -18,9 +18,11 @@ public class StrategyService {
         init();
     }
     
-    public void init() {
+    private void init() {
         theActiveStrategiesExecutor = Executors.newCachedThreadPool();
         
+        //TODO: i don't like this part; somehow get the strategy
+        // to add itself to the running code.
         WindowCore aWindowStrategy = new WindowCore();
         theActiveStrategies.add(aWindowStrategy);
     }
