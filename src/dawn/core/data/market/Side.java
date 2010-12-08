@@ -1,4 +1,4 @@
-package dawn.services.data;
+package dawn.core.data.market;
 
 public enum Side {
     BID, ASK;

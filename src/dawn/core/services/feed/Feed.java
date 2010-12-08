@@ -1,4 +1,4 @@
-package dawn.services.feed;
+package dawn.core.services.feed;
 
 public abstract class Feed {
     
