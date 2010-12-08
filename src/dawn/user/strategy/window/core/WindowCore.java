@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import dawn.user.strategy.Strategy;
 
 public class WindowCore implements Strategy {
+    private final int TIME_STEP = 1;
     private boolean isRunning;
     
     public WindowCore() {
@@ -32,7 +33,7 @@ public class WindowCore implements Strategy {
     
     private void pause() {
         try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(5));
+            Thread.sleep(TimeUnit.SECONDS.toMillis(TIME_STEP));
         } catch (InterruptedException e) {
             e.printStackTrace();
             
