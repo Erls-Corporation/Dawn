@@ -80,18 +80,18 @@ public class GoogleOptionFeedUtils {
                     && myChange != null
                     && myQuantity != null 
                     && myOpenInterest != null
-    			) {
+                ) {
             OptionMarket myOptionMarket = 
                 new OptionMarket(
-        	        myOptionType,
-        	        myStrike,
-        	        new OptionQuote(Side.BID, myQuantity, myBidPrice),
-        	        new OptionQuote(Side.ASK, myQuantity, myAskPrice),
-        	        myPrice,
-        	        myChange,
-        	        myQuantity,
-        	        myOpenInterest
-				);
+                    myOptionType,
+                    myStrike,
+                    new OptionQuote(Side.BID, myQuantity, myBidPrice),
+                    new OptionQuote(Side.ASK, myQuantity, myAskPrice),
+                    myPrice,
+                    myChange,
+                    myQuantity,
+                    myOpenInterest
+                );
             return myOptionMarket;
         } else {
             return null;

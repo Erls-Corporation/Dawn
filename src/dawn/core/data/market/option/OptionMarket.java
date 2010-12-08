@@ -13,12 +13,12 @@ public class OptionMarket extends Market {
     public OptionMarket(
                 OptionType aType, 
                 double aStrike,
-    			OptionQuote aBidQuote, 
-    			OptionQuote aAskQuote,
-    			double aPrice,
-    			double aChange,
-    			int aQuantity,
-    			int aOpenInterest
+                OptionQuote aBidQuote, 
+                OptionQuote aAskQuote,
+                double aPrice,
+                double aChange,
+                int aQuantity,
+                int aOpenInterest
             ) {
         super(aBidQuote, aAskQuote);
         theType = aType;
