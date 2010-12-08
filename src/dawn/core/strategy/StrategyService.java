@@ -1,4 +1,4 @@
-package dawn.core.services.strategy;
+package dawn.core.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
