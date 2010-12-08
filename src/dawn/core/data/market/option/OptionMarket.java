@@ -11,15 +11,15 @@ public class OptionMarket extends Market {
     private final int theOpenInterest;
 
     public OptionMarket(
-    			OptionType aType, 
-    			double aStrike,
+                OptionType aType, 
+                double aStrike,
     			OptionQuote aBidQuote, 
     			OptionQuote aAskQuote,
     			double aPrice,
     			double aChange,
     			int aQuantity,
     			int aOpenInterest
-			) {
+            ) {
         super(aBidQuote, aAskQuote);
         theType = aType;
         theStrike = aStrike;
@@ -47,18 +47,18 @@ public class OptionMarket extends Market {
     }
     
     public double getPrice() {
-    	return thePrice;
+        return thePrice;
     }
     
     public double getChange() {
-    	return theChange;
+        return theChange;
     }
     
     public int getQuantity() {
-    	return theQuantity;
+        return theQuantity;
     }
     
     public int getOpenInterest() {
-    	return theOpenInterest;
+        return theOpenInterest;
     }
 }
