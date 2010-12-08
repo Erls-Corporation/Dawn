@@ -9,7 +9,7 @@ import java.net.URL;
 import dawn.core.data.market.Side;
 import dawn.core.data.market.option.OptionMarket;
 import dawn.core.data.market.option.OptionQuote;
-import dawn.core.data.market.option.OptionQuoteSnapshot;
+import dawn.core.data.market.option.OptionMarketSnapshot;
 import dawn.core.data.market.option.OptionType;
 
 public class GoogleOptionFeedUtils {
@@ -65,11 +65,11 @@ public class GoogleOptionFeedUtils {
         }
     }
 
-    public static OptionQuoteSnapshot convertToSnapshot(String aExchange,
+    public static OptionMarketSnapshot convertToSnapshot(String aExchange,
             String aSymbol) {
         String myGoogleFeedURL = URL + aExchange + ":" + aSymbol;
         StringBuilder mySource = new StringBuilder();
-        OptionQuoteSnapshot myOptionMarketSnapshot = null;
+        OptionMarketSnapshot myOptionMarketSnapshot = null;
         try {
             BufferedReader myBufferedReader = new BufferedReader(
                     new InputStreamReader(new URL(myGoogleFeedURL).openStream()));
@@ -84,7 +84,7 @@ public class GoogleOptionFeedUtils {
             String dataSetOne = parsedSource[1];
             String dataSetTwo = parsedSource[2];
 
-            myOptionMarketSnapshot = new OptionQuoteSnapshot(aExchange, aSymbol);
+            myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange, aSymbol);
 
             parsedSource = dataSetOne.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {

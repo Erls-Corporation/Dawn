@@ -5,9 +5,9 @@ import java.util.Calendar;
 import dawn.core.data.market.Market;
 import dawn.core.data.market.MarketSnapshot;
 
-public class OptionQuoteSnapshot extends MarketSnapshot {
+public class OptionMarketSnapshot extends MarketSnapshot {
 
-    public OptionQuoteSnapshot(String aExchange, String aSymbol) {
+    public OptionMarketSnapshot(String aExchange, String aSymbol) {
         super(aExchange, aSymbol);
     }
 

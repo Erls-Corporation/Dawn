@@ -2,7 +2,7 @@ package dawn.core.services.feed.google;
 
 import java.util.concurrent.TimeUnit;
 
-import dawn.core.data.market.option.OptionQuoteSnapshot;
+import dawn.core.data.market.option.OptionMarketSnapshot;
 import dawn.core.services.feed.Feed;
 
 public class GoogleOptionFeed extends Feed {
@@ -10,7 +10,7 @@ public class GoogleOptionFeed extends Feed {
     private final String theSymbol;
     private final int thePauseTime;
 
-    private OptionQuoteSnapshot theCurrentSnapshot;    
+    private OptionMarketSnapshot theCurrentSnapshot;    
 
     public GoogleOptionFeed(String aExchange, String aSymbol, int aPauseTime) {
         theExchange = aExchange;
@@ -45,7 +45,7 @@ public class GoogleOptionFeed extends Feed {
 
     }
     
-    public OptionQuoteSnapshot getSnapshot() {
+    public OptionMarketSnapshot getSnapshot() {
         return theCurrentSnapshot;
     }
 }
