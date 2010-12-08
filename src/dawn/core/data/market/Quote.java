@@ -10,15 +10,15 @@ public class Quote {
         theQuantity = aQuantity;
         thePrice = aPrice;
     }
-    
+
     public Side getSide() {
         return theSide;
     }
-    
+
     public int getQuantity() {
         return theQuantity;
     }
-    
+
     public double getPrice() {
         return thePrice;
     }

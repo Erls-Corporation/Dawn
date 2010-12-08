@@ -1,19 +1,51 @@
 package dawn.core.services.feed.google;
 
+import java.util.concurrent.TimeUnit;
+
+import dawn.core.data.market.option.OptionQuoteSnapshot;
 import dawn.core.services.feed.Feed;
 
-//chose Google because I already a partial implementation of it
 public class GoogleOptionFeed extends Feed {
+    private final String theExchange;
+    private final String theSymbol;
+    private final int thePauseTime;
 
-    @Override
-    public void run() {
-        // TODO Auto-generated method stub
-        
+    private OptionQuoteSnapshot theCurrentSnapshot;    
+
+    public GoogleOptionFeed(String aExchange, String aSymbol, int aPauseTime) {
+        theExchange = aExchange;
+        theSymbol = aSymbol;
+        thePauseTime = aPauseTime;
+
+        theCurrentSnapshot = null;
     }
     
     @Override
-    public void stop() {
-        // TODO Auto-generated method stub
+    protected void init() {
         
+    }
+
+    @Override
+    protected void step() {
+        theCurrentSnapshot = GoogleOptionFeedUtils.convertToSnapshot(
+                theExchange, theSymbol);
+    }
+
+    @Override
+    protected void pause() {
+        try {
+            Thread.sleep(TimeUnit.SECONDS.toMillis(thePauseTime));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void stop() {
+
+    }
+    
+    public OptionQuoteSnapshot getSnapshot() {
+        return theCurrentSnapshot;
     }
 }

@@ -1,39 +1,36 @@
 package dawn.core.services.feed;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FeedService {
+    private static FeedService theInstance = new FeedService();
+
     private ExecutorService theFeedExecutor;
-    private Map<String, Feed> theFeedMap;    
-    
-    public FeedService() {
-        theFeedMap = new HashMap<String, Feed>();
-        
-        init();
+    private List<Feed> theFeedList;
+
+    public static FeedService getInstance() {
+        return theInstance;
     }
-    
-    private void init() {
+
+    private FeedService() {
         theFeedExecutor = Executors.newCachedThreadPool();
+        theFeedList = new LinkedList<Feed>();
     }
-    
+
     public void stop() {
         theFeedExecutor.shutdown();
-        
-        for (Feed myFeed : theFeedMap.values()) {
+
+        for (Feed myFeed : theFeedList) {
             myFeed.stop();
         }
     }
 
-    public void addFeed(String aFeedKey, Feed aFeed) {
+    public void addFeed(Feed aFeed) {
         theFeedExecutor.execute(aFeed);
-        
-        theFeedMap.put(aFeedKey, aFeed);
-    }
-    
-    public Feed getFeed(String aFeedKey) {
-        return theFeedMap.get(aFeedKey);
+
+        theFeedList.add(aFeed);
     }
 }

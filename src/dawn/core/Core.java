@@ -2,24 +2,21 @@ package dawn.core;
 
 import java.util.concurrent.TimeUnit;
 
+import dawn.core.services.feed.FeedService;
 import dawn.core.strategy.StrategyService;
+import dawn.user.strategy.window.core.WindowCore;
 
 public class Core {
-    private static StrategyService theStrategyService;
-
     public static void main(String[] args) {
-        theStrategyService = new StrategyService();
+        new WindowCore();
 
-        theStrategyService.start();
-
-        //just test like this for now; this will eventually be some
-        //cool UI of some sort I promise!
         try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(10));
+            Thread.sleep(TimeUnit.SECONDS.toMillis(11));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        theStrategyService.stop();
+        StrategyService.getInstance().stop();
+        FeedService.getInstance().stop();
     }
 }

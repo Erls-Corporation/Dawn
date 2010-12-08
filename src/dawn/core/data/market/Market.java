@@ -1,19 +1,19 @@
 package dawn.core.data.market;
 
 public class Market {
-    private final Quote theBid;
-    private final Quote theAsk;
+    protected final Quote theBidQuote;
+    protected final Quote theAskQuote;
 
     public Market(Quote aBid, Quote aAsk) {
-        theBid = aBid;
-        theAsk = aAsk;
+        theBidQuote = aBid;
+        theAskQuote = aAsk;
     }
-    
+
     public Quote getBid() {
-        return theBid;
+        return theBidQuote;
     }
-    
+
     public Quote getAsk() {
-        return theAsk;
+        return theAskQuote;
     }
 }
