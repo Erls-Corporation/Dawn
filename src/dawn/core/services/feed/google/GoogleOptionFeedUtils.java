@@ -16,6 +16,8 @@ public class GoogleOptionFeedUtils {
     private static final String URL = "http://www.google.com/finance/option_chain?q=";
 
     private static OptionMarket convertToOptionMarket(String aGoogleMarket) {
+        //TODO: need to parse expiry date as well
+        //TODO: quantity here is also inaccurate
         Integer myQuantity = null;
         Double myBidPrice = null;
         Double myAskPrice = null;

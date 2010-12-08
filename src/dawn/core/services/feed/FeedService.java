@@ -19,6 +19,12 @@ public class FeedService {
         theFeedExecutor = Executors.newCachedThreadPool();
         theFeedList = new LinkedList<Feed>();
     }
+    
+    public void start() {
+        for (Feed myFeed : theFeedList) {
+            theFeedExecutor.execute(myFeed);
+        }
+    }
 
     public void stop() {
         theFeedExecutor.shutdown();
@@ -29,8 +35,6 @@ public class FeedService {
     }
 
     public void addFeed(Feed aFeed) {
-        theFeedExecutor.execute(aFeed);
-
         theFeedList.add(aFeed);
     }
 }

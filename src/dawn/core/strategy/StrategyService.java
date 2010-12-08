@@ -24,7 +24,12 @@ public class StrategyService {
 
     public void addStrategy(Strategy aStrategy) {
         theActiveStrategies.add(aStrategy);
-        theActiveStrategiesExecutor.execute(aStrategy);
+    }
+    
+    public void start() {
+        for (Strategy myStrategy : theActiveStrategies) {
+            theActiveStrategiesExecutor.execute(myStrategy);
+        }
     }
 
     public void stop() {
