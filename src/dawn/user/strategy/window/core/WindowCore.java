@@ -21,6 +21,7 @@ public class WindowCore extends Strategy {
         OptionQuoteSnapshot mySnapshot = theGoogleSPYFeed.getSnapshot();
 
         if (mySnapshot != null) {
+            //just shows the current snapshot
             mySnapshot.show();
         }
     }
