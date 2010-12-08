@@ -2,7 +2,7 @@ package dawn.core;
 
 import java.util.concurrent.TimeUnit;
 
-import dawn.user.strategy.StrategyService;
+import dawn.core.services.strategy.StrategyService;
 
 public class Core {
     private static StrategyService theStrategyService;

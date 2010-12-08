@@ -1,5 +1,5 @@
 package dawn.core.services.pricer;
 
-public class Pricer {
+public class PricerService {
 
 }

@@ -1,10 +1,11 @@
-package dawn.user.strategy;
+package dawn.core.services.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import dawn.user.strategy.Strategy;
 import dawn.user.strategy.window.core.WindowCore;
 
 public class StrategyService {
