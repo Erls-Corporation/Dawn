@@ -55,7 +55,7 @@ public class OptionMarketSnapshot extends MarketSnapshot {
         }
         System.out.print("\n");
         System.out.print("Put:\n");
-        for (Market myOptionMarket : theCallList) {
+        for (Market myOptionMarket : thePutList) {
             System.out.println(
                     ((OptionMarket) myOptionMarket).getStrike() 
                     + ": Bid-Ask: "

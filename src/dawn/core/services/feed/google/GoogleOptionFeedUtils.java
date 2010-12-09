@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.CharacterIterator;
 
 import dawn.core.data.market.Side;
 import dawn.core.data.market.option.OptionMarket;
@@ -29,48 +30,57 @@ public class GoogleOptionFeedUtils {
         String[] myGoogleStatusTokens = aGoogleMarket.split(",");
 
         for (String myOutput : myGoogleStatusTokens) {
-            if (myOutput.trim().startsWith("vol:")) {
+            myOutput = myOutput.trim();
+            if (myOutput.startsWith("vol:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myQuantity = Integer.parseInt(myOutput);
                 }
-            } else if (myOutput.trim().startsWith("b:")) {
+            } else if (myOutput.startsWith("b:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myBidPrice = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.trim().startsWith("a:")) {
+            } else if (myOutput.startsWith("a:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myAskPrice = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.trim().startsWith("strike:")) {
+            } else if (myOutput.startsWith("strike:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myStrike = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.trim().startsWith("s:")) {
+            } else if (myOutput.startsWith("s:")) {
+                int i = 0;
+                for (i=0; i < myOutput.length(); i++){ 
+                    char c = myOutput.charAt(i);
+                    if (Character.isDigit(c)) {
+                        break;
+                    }
+                }
+                myOutput = myOutput.substring(i);  //or we should pass the name of the underlying and remove from substr..
                 if (myOutput.contains("C")) {
                     myOptionType = OptionType.CALL;
                 } else if (myOutput.contains("P")) {
                     myOptionType = OptionType.PUT;
                 }
-            } else if (myOutput.trim().startsWith("p:")) {
+            } else if (myOutput.startsWith("p:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
-                if (myOutput.length() > 0) {
+                if (myOutput.matches(".*\\d")) {
                     myPrice = Double.parseDouble(myOutput);
-                }
-            } else if (myOutput.trim().startsWith("c:")) {
-                myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
-                if (myOutput.length() > 0) {
+                } 
+            } else if (myOutput.startsWith("c:")) {
+                myOutput = myOutput.replaceAll("[a-zA-Z]|:|\"| ", "");
+                if (myOutput.matches(".*\\d")) {
                     myChange = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.trim().startsWith("oi:")) {
+            } else if (myOutput.startsWith("oi:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myOpenInterest = Integer.parseInt(myOutput);
                 }
-            } else if (myOutput.trim().startsWith("expiry:")) {
+            } else if (myOutput.startsWith("expiry:")) {
                 myOutput = myOutput.substring(myOutput.indexOf("expiry:")+7).replaceAll(":|-|\"|", "");
                 if (myOutput.length() > 0) {
                     myExpiry = myOutput;
@@ -122,7 +132,6 @@ public class GoogleOptionFeedUtils {
                 mySource.append(nextLine);
                 nextLine = myBufferedReader.readLine();
             }
-            System.out.println(mySource);
             String[] parsedSource = mySource.toString().split(
                     "puts:\\[|\\],calls:\\[|\\],underlying_id|<[.*]}\\],");
             String dataSetOne = parsedSource[1];
@@ -132,7 +141,7 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetOne.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                System.out.println(myGoogleMarket);
+                //System.out.println(myGoogleMarket);
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
@@ -141,7 +150,7 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetTwo.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                System.out.println(myGoogleMarket);                
+                //System.out.println(myGoogleMarket);                
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
