@@ -29,48 +29,48 @@ public class GoogleOptionFeedUtils {
         String[] myGoogleStatusTokens = aGoogleMarket.split(",");
 
         for (String myOutput : myGoogleStatusTokens) {
-            if (myOutput.contains("vol:")) {
+            if (myOutput.trim().startsWith("vol:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myQuantity = Integer.parseInt(myOutput);
                 }
-            } else if (myOutput.contains("b:")) {
+            } else if (myOutput.trim().startsWith("b:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myBidPrice = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.contains("a:")) {
+            } else if (myOutput.trim().startsWith("a:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myAskPrice = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.contains("strike:")) {
+            } else if (myOutput.trim().startsWith("strike:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myStrike = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.contains("s:")) {
+            } else if (myOutput.trim().startsWith("s:")) {
                 if (myOutput.contains("C")) {
                     myOptionType = OptionType.CALL;
                 } else if (myOutput.contains("P")) {
                     myOptionType = OptionType.PUT;
                 }
-            } else if (myOutput.contains("p:")) {
+            } else if (myOutput.trim().startsWith("p:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myPrice = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.contains("c:")) {
+            } else if (myOutput.trim().startsWith("c:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myChange = Double.parseDouble(myOutput);
                 }
-            } else if (myOutput.contains("oi:")) {
+            } else if (myOutput.trim().startsWith("oi:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.length() > 0) {
                     myOpenInterest = Integer.parseInt(myOutput);
                 }
-            } else if (myOutput.contains("expiry:")) {
+            } else if (myOutput.trim().startsWith("expiry:")) {
                 myOutput = myOutput.substring(myOutput.indexOf("expiry:")+7).replaceAll(":|-|\"|", "");
                 if (myOutput.length() > 0) {
                     myExpiry = myOutput;
@@ -108,8 +108,9 @@ public class GoogleOptionFeedUtils {
         }
     }
 
-    public static OptionMarketSnapshot convertToSnapshot(String aExchange,
-            String aSymbol) {
+    public static OptionMarketSnapshot convertToSnapshot(
+                String aExchange,
+                String aSymbol ) {
         String myGoogleFeedURL = URL + aExchange + ":" + aSymbol;
         StringBuilder mySource = new StringBuilder();
         OptionMarketSnapshot myOptionMarketSnapshot = null;
@@ -121,7 +122,7 @@ public class GoogleOptionFeedUtils {
                 mySource.append(nextLine);
                 nextLine = myBufferedReader.readLine();
             }
-
+            System.out.println(mySource);
             String[] parsedSource = mySource.toString().split(
                     "puts:\\[|\\],calls:\\[|\\],underlying_id|<[.*]}\\],");
             String dataSetOne = parsedSource[1];
@@ -131,7 +132,7 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetOne.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                //System.out.println(myGoogleMarket);
+                System.out.println(myGoogleMarket);
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
@@ -140,7 +141,7 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetTwo.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                //System.out.println(myGoogleMarket);                
+                System.out.println(myGoogleMarket);                
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
