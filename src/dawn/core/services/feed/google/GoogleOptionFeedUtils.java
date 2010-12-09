@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.CharacterIterator;
 
 import dawn.core.data.market.Side;
 import dawn.core.data.market.option.OptionMarket;
@@ -85,7 +84,7 @@ public class GoogleOptionFeedUtils {
                 if (myOutput.length() > 0) {
                     myExpiry = myOutput;
                 }
-            } else if (myOutput.matches("^\\s\\d{4}\"$")) {
+            } else if (myOutput.matches("^\\d{4}\"$")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 myExpiry = myExpiry.concat(", ").concat(myOutput);
             }
