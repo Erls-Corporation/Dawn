@@ -50,6 +50,8 @@ public class OptionMarketSnapshot extends MarketSnapshot {
                     + ((OptionMarket) myOptionMarket).getQuantity()
                     + ", OpInt: "
                     + ((OptionMarket) myOptionMarket).getOpenInterest()
+                    + ", Expry: "
+                    + ((OptionMarket) myOptionMarket).getExpiry()                    
                 );
         }
         System.out.print("\n");
@@ -69,6 +71,8 @@ public class OptionMarketSnapshot extends MarketSnapshot {
                     + ((OptionMarket) myOptionMarket).getQuantity()
                     + ", OpInt: "
                     + ((OptionMarket) myOptionMarket).getOpenInterest()
+                    + ", Expry: "
+                    + ((OptionMarket) myOptionMarket).getExpiry()                    
                 );
         }
         System.out.print("\n\n");

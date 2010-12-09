@@ -24,6 +24,7 @@ public class GoogleOptionFeedUtils {
         Double myChange = null;
         Integer myQuantity = null;
         Integer myOpenInterest = null;
+        String myExpiry = null;
 
         String[] myGoogleStatusTokens = aGoogleMarket.split(",");
 
@@ -69,6 +70,14 @@ public class GoogleOptionFeedUtils {
                 if (myOutput.length() > 0) {
                     myOpenInterest = Integer.parseInt(myOutput);
                 }
+            } else if (myOutput.contains("expiry:")) {
+                myOutput = myOutput.substring(myOutput.indexOf("expiry:")+7).replaceAll(":|-|\"|", "");
+                if (myOutput.length() > 0) {
+                    myExpiry = myOutput;
+                }
+            } else if (myOutput.matches("^\\s\\d{4}\"$")) {
+                myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
+                myExpiry = myExpiry.concat(", ").concat(myOutput);
             }
         }
         if (
@@ -79,7 +88,8 @@ public class GoogleOptionFeedUtils {
                     && myPrice != null
                     && myChange != null
                     && myQuantity != null 
-                    && myOpenInterest != null ) {
+                    && myOpenInterest != null 
+                    && myExpiry != null ) {
             OptionMarket myOptionMarket = 
                 new OptionMarket(
                     myOptionType,
@@ -89,7 +99,8 @@ public class GoogleOptionFeedUtils {
                     myPrice,
                     myChange,
                     myQuantity,
-                    myOpenInterest
+                    myOpenInterest,
+                    myExpiry
                 );
             return myOptionMarket;
         } else {
@@ -120,6 +131,7 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetOne.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
+                //System.out.println(myGoogleMarket);
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
@@ -128,6 +140,7 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetTwo.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
+                //System.out.println(myGoogleMarket);                
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
