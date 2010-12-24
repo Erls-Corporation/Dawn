@@ -20,6 +20,10 @@ public class FeedService {
         theFeedList = new LinkedList<Feed>();
     }
     
+    public synchronized void addFeed(Feed aFeed) {
+        theFeedList.add(aFeed);
+    }
+    
     public void start() {
         for (Feed myFeed : theFeedList) {
             theFeedExecutor.execute(myFeed);
@@ -32,9 +36,5 @@ public class FeedService {
         for (Feed myFeed : theFeedList) {
             myFeed.stopFeed();
         }
-    }
-
-    public void addFeed(Feed aFeed) {
-        theFeedList.add(aFeed);
     }
 }

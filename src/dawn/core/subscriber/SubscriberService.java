@@ -44,7 +44,7 @@ public class SubscriberService {
         theActiveSubscribersExecutor = Executors.newCachedThreadPool();
     }
 
-    public void addSubscriber(Subscriber aSubscriber) {
+    public synchronized void addSubscriber(Subscriber aSubscriber) {
         theActiveSubscribers.add(aSubscriber);
     }
     
