@@ -1,5 +1,6 @@
 package dawn.core.subscriber;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -15,6 +16,27 @@ public class SubscriberService {
 
     public static SubscriberService getInstance() {
         return theInstance;
+    }
+    
+    public static void newSubscriber(String aSubscriberClassName) {
+        try {
+            Class.forName(aSubscriberClassName)
+                    .getConstructor(new Class[0]).newInstance(new Object[0]);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private SubscriberService() {

@@ -1,34 +1,15 @@
 package dawn.core;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
-import dawn.core.services.feed.FeedService;
+import dawn.core.services.ServiceManager;
 import dawn.core.subscriber.SubscriberService;
 
 public class Core {
     public static void main(String[] args) {
-        try {
-            Class.forName("dawn.user.subscriber.window.core.WindowCore")
-                    .getConstructor(new Class[0]).newInstance(new Object[0]);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        SubscriberService.newSubscriber("dawn.user.subscriber.window.core.WindowCore");
 
-        FeedService.getInstance().start();
-        SubscriberService.getInstance().start();
+        ServiceManager.startServices();
 
         try {
             Thread.sleep(TimeUnit.SECONDS.toMillis(11));
@@ -36,7 +17,6 @@ public class Core {
             e.printStackTrace();
         }
 
-        SubscriberService.getInstance().stop();
-        FeedService.getInstance().stop();
+        ServiceManager.stopServices();
     }
 }
