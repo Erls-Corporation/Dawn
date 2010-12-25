@@ -3,11 +3,13 @@ package dawn.core;
 import java.util.concurrent.TimeUnit;
 
 import dawn.core.services.ServiceManager;
+import dawn.core.services.pricer.blackscholes.BlackScholesOptionPricer;
 import dawn.core.subscriber.SubscriberService;
 
 public class Core {
     public static void main(String[] args) {
-        SubscriberService.newSubscriber("dawn.user.subscriber.window.core.WindowCore");
+        SubscriberService
+                .newSubscriber("dawn.user.subscriber.window.core.WindowCore");
 
         ServiceManager.startServices();
 
@@ -18,5 +20,11 @@ public class Core {
         }
 
         ServiceManager.stopServices();
+
+        System.out.println("");
+        System.out.println(BlackScholesOptionPricer.callPrice(125.6, 125.0,
+                .001, .01, 482209646));
+        System.out.println(BlackScholesOptionPricer.putPrice(125.6, 126.0,
+                .001, .01, 482209646));
     }
 }
