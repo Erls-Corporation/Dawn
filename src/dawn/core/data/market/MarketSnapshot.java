@@ -6,13 +6,15 @@ import java.util.List;
 public class MarketSnapshot {
     protected final String theExchange;
     protected final String theSymbol;
+    protected final double theBasePrice;
 
     protected List<Market> theCallList;
     protected List<Market> thePutList;
 
-    public MarketSnapshot(String aExchange, String aSymbol) {
+    public MarketSnapshot(String aExchange, String aSymbol, double aBasePrice) {
         theExchange = aExchange;
         theSymbol = aSymbol;
+        theBasePrice = aBasePrice;
 
         theCallList = new LinkedList<Market>();
         thePutList = new LinkedList<Market>();

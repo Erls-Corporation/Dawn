@@ -17,7 +17,7 @@ import dawn.core.data.market.option.OptionType;
 
 public class GoogleOptionFeedUtils {
     private static final String URL = "http://www.google.com/finance/option_chain?q=";
-
+    
     private static OptionMarket convertToOptionMarket(String aGoogleMarket) {
         Double myBidPrice = null;
         Double myAskPrice = null;
@@ -89,18 +89,20 @@ public class GoogleOptionFeedUtils {
                         .replaceAll(":|-|\"|", "");
 
                 try {
-                    Date myDate = new SimpleDateFormat("MMM dd").parse(myOutput);
+                    Date myDate = new SimpleDateFormat("MMM dd")
+                            .parse(myOutput);
                     myExpiry = myDate.getTime();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                
+
             } else if (myOutput.matches("^\\d{4}\"$")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
 
                 try {
                     Date myDate = new SimpleDateFormat("yyyy").parse(myOutput);
-                    myExpiry = myDate.getTime() + myExpiry - new Date().getTime();
+                    myExpiry = myDate.getTime() + myExpiry
+                            - new Date().getTime();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -127,6 +129,7 @@ public class GoogleOptionFeedUtils {
         StringBuilder mySource = new StringBuilder();
         OptionMarketSnapshot myOptionMarketSnapshot = null;
         try {
+            
             BufferedReader myBufferedReader = new BufferedReader(
                     new InputStreamReader(new URL(myGoogleFeedURL).openStream()));
             String nextLine = myBufferedReader.readLine();
@@ -134,13 +137,29 @@ public class GoogleOptionFeedUtils {
                 mySource.append(nextLine);
                 nextLine = myBufferedReader.readLine();
             }
+
+            String[] underlyingPrice = mySource.toString().split(
+                    "underlying_price:|}};");
+            double basePrice = Double.NEGATIVE_INFINITY;
+            for (String underlying : underlyingPrice) {
+                try {
+                    basePrice = Double.parseDouble(underlying);
+                } catch (NumberFormatException e) {
+                    continue;
+                }
+            }
+            
+            if (basePrice == Double.NEGATIVE_INFINITY) {
+                return null;
+            }
+            
+            myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange,
+                    aSymbol, basePrice);
+
             String[] parsedSource = mySource.toString().split(
                     "puts:\\[|\\],calls:\\[|\\],underlying_id|<[.*]}\\],");
             String dataSetOne = parsedSource[1];
             String dataSetTwo = parsedSource[2];
-
-            myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange,
-                    aSymbol);
 
             parsedSource = dataSetOne.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {

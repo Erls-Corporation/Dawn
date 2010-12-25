@@ -7,8 +7,8 @@ import dawn.core.data.market.MarketSnapshot;
 
 public class OptionMarketSnapshot extends MarketSnapshot {
 
-    public OptionMarketSnapshot(String aExchange, String aSymbol) {
-        super(aExchange, aSymbol);
+    public OptionMarketSnapshot(String aExchange, String aSymbol, double aBasePrice) {
+        super(aExchange, aSymbol, aBasePrice);
     }
 
     public void addOptionMarket(OptionMarket aOptionMarket) {
@@ -32,8 +32,13 @@ public class OptionMarketSnapshot extends MarketSnapshot {
         return theSymbol;
     }
 
+    public double getBasePrice() {
+        return theBasePrice;
+    }
+    
     public void show() {
         System.out.print(Calendar.getInstance().getTime() + "\n");
+        System.out.print("Base Price: " + theBasePrice + "\n");
         System.out.print("Call:\n");
         for (Market myMarket : theCallList) {
             OptionMarket myOptionMarket = (OptionMarket) myMarket;
