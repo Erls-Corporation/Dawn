@@ -18,6 +18,16 @@ import dawn.core.data.market.option.OptionType;
 public class GoogleOptionFeedUtils {
     private static final String URL = "http://www.google.com/finance/option_chain?q=";
     
+    private static double getVolatility(String aExchange, String aSymbol) {
+        //TODO: use http://www.google.com/finance/historical?q=aExchange:aSymbol
+        return 0.01;
+    }
+    
+    private static double getAnnualRate(String aExchange, String aSymbol) {
+        //TODO: ???
+        return 0.01;
+    }
+    
     private static OptionMarket convertToOptionMarket(String aGoogleMarket) {
         Double myBidPrice = null;
         Double myAskPrice = null;
@@ -153,8 +163,11 @@ public class GoogleOptionFeedUtils {
                 return null;
             }
             
+            double volatility = getVolatility(aExchange, aSymbol);
+            double rate = getAnnualRate(aExchange, aSymbol);
+            
             myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange,
-                    aSymbol, basePrice);
+                    aSymbol, basePrice, volatility, rate);
 
             String[] parsedSource = mySource.toString().split(
                     "puts:\\[|\\],calls:\\[|\\],underlying_id|<[.*]}\\],");

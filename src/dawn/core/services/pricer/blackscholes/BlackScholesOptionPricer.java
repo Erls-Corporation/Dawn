@@ -2,11 +2,11 @@ package dawn.core.services.pricer.blackscholes;
 
 //http://www.cs.princeton.edu/introcs/22library/BlackScholes.java.html
 public class BlackScholesOptionPricer {
-    private static double MILLISECONDS_PER_DAY = 86400000.0;
+    private static double MILLISECONDS_PER_YEAR = 1000*60*60*24*365;
 
     public static double callPrice(double aSpotPrice, double aStrikePrice,
             double aAnnualRate, double aReturnVolatility, long aTimeToExpiry) {
-        double myTimeToExpiry = aTimeToExpiry / MILLISECONDS_PER_DAY;
+        double myTimeToExpiry = aTimeToExpiry / MILLISECONDS_PER_YEAR;
         double d1 = (Math.log(aSpotPrice / aStrikePrice) + (aAnnualRate + aReturnVolatility
                 * aReturnVolatility / 2)
                 * myTimeToExpiry)
@@ -18,7 +18,7 @@ public class BlackScholesOptionPricer {
 
     public static double putPrice(double aSpotPrice, double aStrikePrice,
             double aAnnualRate, double aReturnVolatility, long aTimeToExpiry) {
-        double myTimeToExpiry = aTimeToExpiry / MILLISECONDS_PER_DAY;
+        double myTimeToExpiry = aTimeToExpiry / MILLISECONDS_PER_YEAR;
         double d1 = (Math.log(aSpotPrice / aStrikePrice) + (aAnnualRate + aReturnVolatility
                 * aReturnVolatility / 2)
                 * myTimeToExpiry)

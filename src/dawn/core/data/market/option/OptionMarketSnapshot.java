@@ -4,11 +4,19 @@ import java.util.Calendar;
 
 import dawn.core.data.market.Market;
 import dawn.core.data.market.MarketSnapshot;
+import dawn.core.services.pricer.blackscholes.BlackScholesOptionPricer;
 
 public class OptionMarketSnapshot extends MarketSnapshot {
 
-    public OptionMarketSnapshot(String aExchange, String aSymbol, double aBasePrice) {
+    private final double theVolatility;
+    private final double theAnnualRate;
+
+    public OptionMarketSnapshot(String aExchange, String aSymbol,
+            double aBasePrice, double aVolatility, double aAnnualRate) {
         super(aExchange, aSymbol, aBasePrice);
+
+        theVolatility = aVolatility;
+        theAnnualRate = aAnnualRate;
     }
 
     public void addOptionMarket(OptionMarket aOptionMarket) {
@@ -35,17 +43,24 @@ public class OptionMarketSnapshot extends MarketSnapshot {
     public double getBasePrice() {
         return theBasePrice;
     }
-    
+
+    public double getVolatility() {
+        return theVolatility;
+    }
+
+    public double getAnnualRate() {
+        return theAnnualRate;
+    }
+
     public void show() {
         System.out.print(Calendar.getInstance().getTime() + "\n");
         System.out.print("Base Price: " + theBasePrice + "\n");
         System.out.print("Call:\n");
         for (Market myMarket : theCallList) {
             OptionMarket myOptionMarket = (OptionMarket) myMarket;
-            System.out.println(
-                    myOptionMarket.getStrike() 
+            System.out.println(myOptionMarket.getStrike()
                     + ": Bid-Ask: "
-                    + myOptionMarket.getBid().getPrice() 
+                    + myOptionMarket.getBid().getPrice()
                     + " - "
                     + myOptionMarket.getAsk().getPrice()
                     + ", Last: "
@@ -57,28 +72,28 @@ public class OptionMarketSnapshot extends MarketSnapshot {
                     + ", OpInt: "
                     + myOptionMarket.getOpenInterest()
                     + ", Expry: "
-                    + myOptionMarket.getExpiry() );
+                    + myOptionMarket.getExpiry()
+                    + ", Black Scholes Theoretical: "
+                    + BlackScholesOptionPricer.callPrice(theBasePrice,
+                            myOptionMarket.getStrike(), theAnnualRate,
+                            theVolatility, myOptionMarket.getExpiry()));
         }
         System.out.print("\n");
         System.out.print("Put:\n");
         for (Market myMarket : thePutList) {
             OptionMarket myOptionMarket = (OptionMarket) myMarket;
-            System.out.println(
-                    myOptionMarket.getStrike() 
-                    + ": Bid-Ask: "
-                    + myOptionMarket.getBid().getPrice() 
-                    + " - "
-                    + myOptionMarket.getAsk().getPrice()
-                    + ", Last: "
-                    + myOptionMarket.getPrice()
-                    + ", Change: "
-                    + myOptionMarket.getChange()
-                    + ", Qty: "
-                    + myOptionMarket.getQuantity()
-                    + ", OpInt: "
-                    + myOptionMarket.getOpenInterest()
-                    + ", Expry: "
-                    + myOptionMarket.getExpiry() );
+            System.out.println(myOptionMarket.getStrike() + ": Bid-Ask: "
+                    + myOptionMarket.getBid().getPrice() + " - "
+                    + myOptionMarket.getAsk().getPrice() + ", Last: "
+                    + myOptionMarket.getPrice() + ", Change: "
+                    + myOptionMarket.getChange() + ", Qty: "
+                    + myOptionMarket.getQuantity() + ", OpInt: "
+                    + myOptionMarket.getOpenInterest() + ", Expry: "
+                    + myOptionMarket.getExpiry()
+                    + ", Black Scholes Theoretical: "
+                    + BlackScholesOptionPricer.putPrice(theBasePrice,
+                            myOptionMarket.getStrike(), theAnnualRate,
+                            theVolatility, myOptionMarket.getExpiry()));
         }
         System.out.print("\n\n");
     }
