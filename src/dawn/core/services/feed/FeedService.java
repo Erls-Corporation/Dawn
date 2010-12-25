@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FeedService {
-    private static FeedService theInstance = new FeedService();
+    private static final FeedService theInstance = new FeedService();
 
     private ExecutorService theFeedExecutor;
     private List<Feed> theFeedList;

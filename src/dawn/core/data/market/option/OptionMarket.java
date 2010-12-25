@@ -9,7 +9,7 @@ public class OptionMarket extends Market {
     private final double theChange;
     private final int theQuantity;
     private final int theOpenInterest;
-    private final String theExpiry;
+    private final long theExpiry;
 
     public OptionMarket(
                 OptionType aType, 
@@ -20,7 +20,7 @@ public class OptionMarket extends Market {
                 double aChange,
                 int aQuantity,
                 int aOpenInterest ,
-                String aExpiry ) {
+                long aExpiry ) {
         super(aBidQuote, aAskQuote);
         theType = aType;
         theStrike = aStrike;
@@ -63,7 +63,7 @@ public class OptionMarket extends Market {
         return theOpenInterest;
     }
     
-    public String getExpiry() {
+    public long getExpiry() {
         return theExpiry;
     }
 }

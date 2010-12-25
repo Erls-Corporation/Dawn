@@ -35,43 +35,45 @@ public class OptionMarketSnapshot extends MarketSnapshot {
     public void show() {
         System.out.print(Calendar.getInstance().getTime() + "\n");
         System.out.print("Call:\n");
-        for (Market myOptionMarket : theCallList) {
+        for (Market myMarket : theCallList) {
+            OptionMarket myOptionMarket = (OptionMarket) myMarket;
             System.out.println(
-                    ((OptionMarket) myOptionMarket).getStrike() 
+                    myOptionMarket.getStrike() 
                     + ": Bid-Ask: "
                     + myOptionMarket.getBid().getPrice() 
                     + " - "
                     + myOptionMarket.getAsk().getPrice()
                     + ", Last: "
-                    + ((OptionMarket) myOptionMarket).getPrice()
+                    + myOptionMarket.getPrice()
                     + ", Change: "
-                    + ((OptionMarket) myOptionMarket).getChange()
+                    + myOptionMarket.getChange()
                     + ", Qty: "
-                    + ((OptionMarket) myOptionMarket).getQuantity()
+                    + myOptionMarket.getQuantity()
                     + ", OpInt: "
-                    + ((OptionMarket) myOptionMarket).getOpenInterest()
+                    + myOptionMarket.getOpenInterest()
                     + ", Expry: "
-                    + ((OptionMarket) myOptionMarket).getExpiry() );
+                    + myOptionMarket.getExpiry() );
         }
         System.out.print("\n");
         System.out.print("Put:\n");
-        for (Market myOptionMarket : thePutList) {
+        for (Market myMarket : thePutList) {
+            OptionMarket myOptionMarket = (OptionMarket) myMarket;
             System.out.println(
-                    ((OptionMarket) myOptionMarket).getStrike() 
+                    myOptionMarket.getStrike() 
                     + ": Bid-Ask: "
                     + myOptionMarket.getBid().getPrice() 
                     + " - "
                     + myOptionMarket.getAsk().getPrice()
                     + ", Last: "
-                    + ((OptionMarket) myOptionMarket).getPrice()
+                    + myOptionMarket.getPrice()
                     + ", Change: "
-                    + ((OptionMarket) myOptionMarket).getChange()
+                    + myOptionMarket.getChange()
                     + ", Qty: "
-                    + ((OptionMarket) myOptionMarket).getQuantity()
+                    + myOptionMarket.getQuantity()
                     + ", OpInt: "
-                    + ((OptionMarket) myOptionMarket).getOpenInterest()
+                    + myOptionMarket.getOpenInterest()
                     + ", Expry: "
-                    + ((OptionMarket) myOptionMarket).getExpiry() );
+                    + myOptionMarket.getExpiry() );
         }
         System.out.print("\n\n");
     }

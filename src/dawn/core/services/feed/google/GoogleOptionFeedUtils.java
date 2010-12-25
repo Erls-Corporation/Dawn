@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import dawn.core.data.market.Side;
 import dawn.core.data.market.option.OptionMarket;
@@ -24,7 +27,7 @@ public class GoogleOptionFeedUtils {
         Double myChange = null;
         Integer myQuantity = null;
         Integer myOpenInterest = null;
-        String myExpiry = null;
+        Long myExpiry = null;
 
         String[] myGoogleStatusTokens = aGoogleMarket.split(",");
 
@@ -52,13 +55,15 @@ public class GoogleOptionFeedUtils {
                 }
             } else if (myOutput.startsWith("s:")) {
                 int i = 0;
-                for (i=0; i < myOutput.length(); i++){ 
+                for (i = 0; i < myOutput.length(); i++) {
                     char c = myOutput.charAt(i);
                     if (Character.isDigit(c)) {
                         break;
                     }
                 }
-                myOutput = myOutput.substring(i);  //or we should pass the name of the underlying and remove from substr..
+                myOutput = myOutput.substring(i); // or we should pass the name
+                // of the underlying and
+                // remove from substr..
                 if (myOutput.contains("C")) {
                     myOptionType = OptionType.CALL;
                 } else if (myOutput.contains("P")) {
@@ -68,7 +73,7 @@ public class GoogleOptionFeedUtils {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
                 if (myOutput.matches(".*\\d")) {
                     myPrice = Double.parseDouble(myOutput);
-                } 
+                }
             } else if (myOutput.startsWith("c:")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|\"| ", "");
                 if (myOutput.matches(".*\\d")) {
@@ -80,46 +85,44 @@ public class GoogleOptionFeedUtils {
                     myOpenInterest = Integer.parseInt(myOutput);
                 }
             } else if (myOutput.startsWith("expiry:")) {
-                myOutput = myOutput.substring(myOutput.indexOf("expiry:")+7).replaceAll(":|-|\"|", "");
-                if (myOutput.length() > 0) {
-                    myExpiry = myOutput;
+                myOutput = myOutput.substring(myOutput.indexOf("expiry:") + 7)
+                        .replaceAll(":|-|\"|", "");
+
+                try {
+                    Date myDate = new SimpleDateFormat("MMM dd").parse(myOutput);
+                    myExpiry = myDate.getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+                
             } else if (myOutput.matches("^\\d{4}\"$")) {
                 myOutput = myOutput.replaceAll("[a-zA-Z]|:|-|\"| ", "");
-                myExpiry = myExpiry.concat(", ").concat(myOutput);
+
+                try {
+                    Date myDate = new SimpleDateFormat("yyyy").parse(myOutput);
+                    myExpiry = myDate.getTime() + myExpiry - new Date().getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        if (
-                    myOptionType != null 
-                    && myBidPrice != null 
-                    && myAskPrice != null
-                    && myStrike != null
-                    && myPrice != null
-                    && myChange != null
-                    && myQuantity != null 
-                    && myOpenInterest != null 
-                    && myExpiry != null ) {
-            OptionMarket myOptionMarket = 
-                new OptionMarket(
-                    myOptionType,
+        if (myOptionType != null && myBidPrice != null && myAskPrice != null
+                && myStrike != null && myPrice != null && myChange != null
+                && myQuantity != null && myOpenInterest != null
+                && myExpiry != null) {
+            OptionMarket myOptionMarket = new OptionMarket(myOptionType,
                     myStrike,
                     new OptionQuote(Side.BID, myQuantity, myBidPrice),
-                    new OptionQuote(Side.ASK, myQuantity, myAskPrice),
-                    myPrice,
-                    myChange,
-                    myQuantity,
-                    myOpenInterest,
-                    myExpiry
-                );
+                    new OptionQuote(Side.ASK, myQuantity, myAskPrice), myPrice,
+                    myChange, myQuantity, myOpenInterest, myExpiry);
             return myOptionMarket;
         } else {
             return null;
         }
     }
 
-    public static OptionMarketSnapshot convertToSnapshot(
-                String aExchange,
-                String aSymbol ) {
+    public static OptionMarketSnapshot convertToSnapshot(String aExchange,
+            String aSymbol) {
         String myGoogleFeedURL = URL + aExchange + ":" + aSymbol;
         StringBuilder mySource = new StringBuilder();
         OptionMarketSnapshot myOptionMarketSnapshot = null;
@@ -136,11 +139,12 @@ public class GoogleOptionFeedUtils {
             String dataSetOne = parsedSource[1];
             String dataSetTwo = parsedSource[2];
 
-            myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange, aSymbol);
+            myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange,
+                    aSymbol);
 
             parsedSource = dataSetOne.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                //System.out.println(myGoogleMarket);
+                // System.out.println(myGoogleMarket);
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
@@ -149,7 +153,7 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetTwo.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                //System.out.println(myGoogleMarket);                
+                // System.out.println(myGoogleMarket);
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);

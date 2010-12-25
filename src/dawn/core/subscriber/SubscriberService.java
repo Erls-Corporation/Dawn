@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import dawn.user.subscriber.Subscriber;
 
 public class SubscriberService {
-    private static SubscriberService theInstance = new SubscriberService();
+    private static final SubscriberService theInstance = new SubscriberService();
 
     private ExecutorService theActiveSubscribersExecutor;
     private List<Subscriber> theActiveSubscribers;
