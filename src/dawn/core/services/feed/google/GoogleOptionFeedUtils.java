@@ -8,6 +8,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import dawn.core.data.market.Side;
 import dawn.core.data.market.option.OptionMarket;
@@ -16,18 +18,91 @@ import dawn.core.data.market.option.OptionMarketSnapshot;
 import dawn.core.data.market.option.OptionType;
 
 public class GoogleOptionFeedUtils {
-    private static final String URL = "http://www.google.com/finance/option_chain?q=";
-    
+    private static final String DESCRIPTION_URL = "http://www.google.com/finance?q=";
+    private static final String OPTION_URL = "http://www.google.com/finance/option_chain?q=";
+    private static final String HISTORY_URL = "http://www.google.com/finance/historical?output=csv&histperiod=daily&q=";
+
     private static double getVolatility(String aExchange, String aSymbol) {
-        //TODO: use http://www.google.com/finance/historical?q=aExchange:aSymbol
-        return 0.01;
+        String myGoogleFeedURL = HISTORY_URL + aExchange + ":" + aSymbol;
+        try {
+            BufferedReader myBufferedReader = new BufferedReader(
+                    new InputStreamReader(new URL(myGoogleFeedURL).openStream()));
+
+            List<Double> priceDiffList = new LinkedList<Double>();
+
+            String nextLine = myBufferedReader.readLine();
+            while (nextLine != null) {
+                nextLine = myBufferedReader.readLine();
+                if (nextLine != null) {
+                    String[] data = nextLine.split(",");
+                    Double openPrice = Double.parseDouble(data[1]);
+                    Double closePrice = Double.parseDouble(data[4]);
+
+                    priceDiffList.add((closePrice - openPrice) / openPrice);
+                }
+            }
+
+            double sum = 0.0;
+            for (double priceDiff : priceDiffList) {
+                sum += priceDiff;
+            }
+
+            double mean = sum / priceDiffList.size();
+            sum = 0.0;
+
+            for (double priceDiff : priceDiffList) {
+                sum += (priceDiff - mean) * (priceDiff - mean);
+            }
+
+            return Math.sqrt(sum / priceDiffList.size());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Double.NEGATIVE_INFINITY;
     }
-    
-    private static double getAnnualRate(String aExchange, String aSymbol) {
-        //TODO: ???
-        return 0.01;
+
+    private static double getAnnualRate(String aExchange, String aSymbol,
+            double aBasePrice) {
+        String myGoogleFeedURL = DESCRIPTION_URL + aExchange + ":" + aSymbol;
+        StringBuilder mySource = new StringBuilder();
+        try {
+            BufferedReader myBufferedReader = new BufferedReader(
+                    new InputStreamReader(new URL(myGoogleFeedURL).openStream()));
+
+            String nextLine = myBufferedReader.readLine();
+            while (nextLine != null) {
+                nextLine = myBufferedReader.readLine();
+                if (nextLine != null) {
+                    mySource.append(nextLine);
+                }
+            }
+
+            String[] parsedSource = mySource.toString().split(
+                    "<span class=\"goog-inline-block key\" "
+                            + "data-snapfield=\"range\">Range</span>|"
+                            + "<span class=\"goog-inline-block key\" "
+                            + "data-snapfield=\"range_52week\">52 week</span>");
+            String source = parsedSource[1];
+            parsedSource = source
+                    .split("<span class=\"goog-inline-block val\">|"
+                            + "</span><li>| - ");
+
+            Double lowPrice = Double.parseDouble(parsedSource[1]);
+            Double highPrice = Double.parseDouble(parsedSource[2]);
+
+            return (highPrice - lowPrice) / aBasePrice;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Double.NEGATIVE_INFINITY;
     }
-    
+
     private static OptionMarket convertToOptionMarket(String aGoogleMarket) {
         Double myBidPrice = null;
         Double myAskPrice = null;
@@ -135,11 +210,10 @@ public class GoogleOptionFeedUtils {
 
     public static OptionMarketSnapshot convertToSnapshot(String aExchange,
             String aSymbol) {
-        String myGoogleFeedURL = URL + aExchange + ":" + aSymbol;
+        String myGoogleFeedURL = OPTION_URL + aExchange + ":" + aSymbol;
         StringBuilder mySource = new StringBuilder();
         OptionMarketSnapshot myOptionMarketSnapshot = null;
         try {
-            
             BufferedReader myBufferedReader = new BufferedReader(
                     new InputStreamReader(new URL(myGoogleFeedURL).openStream()));
             String nextLine = myBufferedReader.readLine();
@@ -158,14 +232,16 @@ public class GoogleOptionFeedUtils {
                     continue;
                 }
             }
-            
-            if (basePrice == Double.NEGATIVE_INFINITY) {
+
+            double volatility = getVolatility(aExchange, aSymbol);
+            double rate = getAnnualRate(aExchange, aSymbol, basePrice);
+
+            if (basePrice == Double.NEGATIVE_INFINITY
+                    || volatility == Double.NEGATIVE_INFINITY
+                    || rate == Double.NEGATIVE_INFINITY) {
                 return null;
             }
-            
-            double volatility = getVolatility(aExchange, aSymbol);
-            double rate = getAnnualRate(aExchange, aSymbol);
-            
+
             myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange,
                     aSymbol, basePrice, volatility, rate);
 
@@ -176,7 +252,6 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetOne.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                // System.out.println(myGoogleMarket);
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);
@@ -185,7 +260,6 @@ public class GoogleOptionFeedUtils {
 
             parsedSource = dataSetTwo.split("\\},\\{|\\{|\\}");
             for (String myGoogleMarket : parsedSource) {
-                // System.out.println(myGoogleMarket);
                 OptionMarket myOptionMarket = convertToOptionMarket(myGoogleMarket);
                 if (myOptionMarket != null) {
                     myOptionMarketSnapshot.addOptionMarket(myOptionMarket);

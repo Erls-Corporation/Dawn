@@ -53,8 +53,11 @@ public class OptionMarketSnapshot extends MarketSnapshot {
     }
 
     public void show() {
+        System.out.print(theExchange + ":" + theSymbol + "\n");
         System.out.print(Calendar.getInstance().getTime() + "\n");
-        System.out.print("Base Price: " + theBasePrice + "\n");
+        System.out.print("Underlying Price: " + theBasePrice + "\n");
+        System.out.print("Volatility: " + theVolatility + ", " + "Rate: "
+                + theAnnualRate + "\n");
         System.out.print("Call:\n");
         for (Market myMarket : theCallList) {
             OptionMarket myOptionMarket = (OptionMarket) myMarket;
@@ -82,13 +85,20 @@ public class OptionMarketSnapshot extends MarketSnapshot {
         System.out.print("Put:\n");
         for (Market myMarket : thePutList) {
             OptionMarket myOptionMarket = (OptionMarket) myMarket;
-            System.out.println(myOptionMarket.getStrike() + ": Bid-Ask: "
-                    + myOptionMarket.getBid().getPrice() + " - "
-                    + myOptionMarket.getAsk().getPrice() + ", Last: "
-                    + myOptionMarket.getPrice() + ", Change: "
-                    + myOptionMarket.getChange() + ", Qty: "
-                    + myOptionMarket.getQuantity() + ", OpInt: "
-                    + myOptionMarket.getOpenInterest() + ", Expry: "
+            System.out.println(myOptionMarket.getStrike()
+                    + ": Bid-Ask: "
+                    + myOptionMarket.getBid().getPrice()
+                    + " - "
+                    + myOptionMarket.getAsk().getPrice()
+                    + ", Last: "
+                    + myOptionMarket.getPrice()
+                    + ", Change: "
+                    + myOptionMarket.getChange()
+                    + ", Qty: "
+                    + myOptionMarket.getQuantity()
+                    + ", OpInt: "
+                    + myOptionMarket.getOpenInterest()
+                    + ", Expry: "
                     + myOptionMarket.getExpiry()
                     + ", Black Scholes Theoretical: "
                     + BlackScholesOptionPricer.putPrice(theBasePrice,
