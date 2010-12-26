@@ -65,7 +65,7 @@ public class GoogleOptionFeedUtils {
     }
 
     private static double getAnnualRate(String aExchange, String aSymbol,
-            double aBasePrice) {
+            double aunderlyingPrice) {
         String myGoogleFeedURL = DESCRIPTION_URL + aExchange + ":" + aSymbol;
         StringBuilder mySource = new StringBuilder();
         try {
@@ -93,7 +93,7 @@ public class GoogleOptionFeedUtils {
             Double lowPrice = Double.parseDouble(parsedSource[1]);
             Double highPrice = Double.parseDouble(parsedSource[2]);
 
-            return (highPrice - lowPrice) / aBasePrice;
+            return (highPrice - lowPrice) / aunderlyingPrice;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -222,28 +222,28 @@ public class GoogleOptionFeedUtils {
                 nextLine = myBufferedReader.readLine();
             }
 
-            String[] underlyingPrice = mySource.toString().split(
+            String[] underlyingPrices = mySource.toString().split(
                     "underlying_price:|}};");
-            double basePrice = Double.NEGATIVE_INFINITY;
-            for (String underlying : underlyingPrice) {
+            double underlyingPrice = Double.NEGATIVE_INFINITY;
+            for (String underlying : underlyingPrices) {
                 try {
-                    basePrice = Double.parseDouble(underlying);
+                    underlyingPrice = Double.parseDouble(underlying);
                 } catch (NumberFormatException e) {
                     continue;
                 }
             }
 
             double volatility = getVolatility(aExchange, aSymbol);
-            double rate = getAnnualRate(aExchange, aSymbol, basePrice);
+            double rate = getAnnualRate(aExchange, aSymbol, underlyingPrice);
 
-            if (basePrice == Double.NEGATIVE_INFINITY
+            if (underlyingPrice == Double.NEGATIVE_INFINITY
                     || volatility == Double.NEGATIVE_INFINITY
                     || rate == Double.NEGATIVE_INFINITY) {
                 return null;
             }
 
             myOptionMarketSnapshot = new OptionMarketSnapshot(aExchange,
-                    aSymbol, basePrice, volatility, rate);
+                    aSymbol, underlyingPrice, volatility, rate);
 
             String[] parsedSource = mySource.toString().split(
                     "puts:\\[|\\],calls:\\[|\\],underlying_id|<[.*]}\\],");

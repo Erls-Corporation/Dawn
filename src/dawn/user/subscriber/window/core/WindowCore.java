@@ -13,7 +13,7 @@ public class WindowCore extends Subscriber {
 
     @Override
     protected void init() {
-        theGoogleSPYFeed = new GoogleOptionFeed("NYSE", "SPY", TIME_STEP);
+        theGoogleSPYFeed = new GoogleOptionFeed("NYSE", "CRM", TIME_STEP);
     }
 
     @Override
