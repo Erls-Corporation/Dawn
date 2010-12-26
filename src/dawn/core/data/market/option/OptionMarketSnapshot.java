@@ -80,10 +80,13 @@ public class OptionMarketSnapshot extends MarketSnapshot {
                 + myOptionMarket.getChange() + ", Qty: "
                 + myOptionMarket.getQuantity() + ", OpInt: "
                 + myOptionMarket.getOpenInterest() + ", Expry: "
-                + myOptionMarket.getExpiry() + "\n"
-                + "Black Scholes Theoretical: "
+                + myOptionMarket.getExpiry() + "\n" + "Theoretical: "
                 + BlackScholesOptionPricer.getOptionPrice(this, myOptionMarket)
                 + ", Delta: "
-                + BlackScholesOptionPricer.getDelta(this, myOptionMarket));
+                + BlackScholesOptionPricer.getDelta(this, myOptionMarket)
+                + ", Gamma: "
+                + BlackScholesOptionPricer.getGamma(this, myOptionMarket)
+                + ", Vega: "
+                + BlackScholesOptionPricer.getVega(this, myOptionMarket));
     }
 }
