@@ -13,7 +13,7 @@ public class Core {
         ServiceManager.startServices();
 
         try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis(11));
+            Thread.sleep(TimeUnit.SECONDS.toMillis(6));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
