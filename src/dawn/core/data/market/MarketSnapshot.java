@@ -11,10 +11,10 @@ public class MarketSnapshot {
     protected List<Market> theCallList;
     protected List<Market> thePutList;
 
-    public MarketSnapshot(String aExchange, String aSymbol, double aunderlyingPrice) {
+    public MarketSnapshot(String aExchange, String aSymbol, double aUnderlyingPrice) {
         theExchange = aExchange;
         theSymbol = aSymbol;
-        theUnderlyingPrice = aunderlyingPrice;
+        theUnderlyingPrice = aUnderlyingPrice;
 
         theCallList = new LinkedList<Market>();
         thePutList = new LinkedList<Market>();

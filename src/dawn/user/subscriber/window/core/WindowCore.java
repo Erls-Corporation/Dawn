@@ -81,11 +81,11 @@ public class WindowCore extends Subscriber {
                 + myOptionMarket.getOpenInterest()
                 + ", Expry: "
                 + myOptionMarket.getExpiry()
-                + "\n"
-                + "Theoretical: "
+                + ", Theoretical: "
                 + BlackScholesOptionPricer.getOptionPrice(
                         aOptionMarketSnapshot, myOptionMarket)
-                + ", Delta: "
+                + "\n"
+                + "Delta: "
                 + BlackScholesOptionPricer.getDelta(aOptionMarketSnapshot,
                         myOptionMarket)
                 + ", Gamma: "
@@ -94,8 +94,7 @@ public class WindowCore extends Subscriber {
                 + ", Vega: "
                 + BlackScholesOptionPricer.getVega(aOptionMarketSnapshot,
                         myOptionMarket)
-                + "\n"
-                + "Theta: "
+                + ", Theta: "
                 + BlackScholesOptionPricer.getTheta(aOptionMarketSnapshot,
                         myOptionMarket)
                 + ", Rho: "

@@ -65,7 +65,7 @@ public class GoogleOptionFeedUtils {
     }
 
     private static double getAnnualRate(String aExchange, String aSymbol,
-            double aunderlyingPrice) {
+            double aUnderlyingPrice) {
         String myGoogleFeedURL = DESCRIPTION_URL + aExchange + ":" + aSymbol;
         StringBuilder mySource = new StringBuilder();
         try {
@@ -93,7 +93,7 @@ public class GoogleOptionFeedUtils {
             Double lowPrice = Double.parseDouble(parsedSource[1]);
             Double highPrice = Double.parseDouble(parsedSource[2]);
 
-            return (highPrice - lowPrice) / aunderlyingPrice;
+            return (highPrice - lowPrice) / aUnderlyingPrice;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
