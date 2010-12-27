@@ -1,10 +1,10 @@
 package dawn.core.data.market.option;
 
-import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 import dawn.core.data.market.Market;
 import dawn.core.data.market.MarketSnapshot;
-import dawn.core.services.pricer.blackscholes.BlackScholesOptionPricer;
 
 public class OptionMarketSnapshot extends MarketSnapshot {
 
@@ -27,8 +27,6 @@ public class OptionMarketSnapshot extends MarketSnapshot {
             case PUT:
                 addPutMarket(aOptionMarket);
                 break;
-            default:
-                throw new IllegalArgumentException(this + "Invalid Market Type");
         }
     }
 
@@ -51,42 +49,20 @@ public class OptionMarketSnapshot extends MarketSnapshot {
     public double getAnnualRate() {
         return theAnnualRate;
     }
-
-    public void show() {
-        System.out.print(theExchange + ":" + theSymbol + "\n");
-        System.out.print(Calendar.getInstance().getTime() + "\n");
-        System.out.print("Underlying Price: " + theUnderlyingPrice + "\n");
-        System.out.print("Volatility: " + theVolatility + ", " + "Rate: "
-                + theAnnualRate + "\n");
-        System.out.print("Call:\n");
+    
+    public List<OptionMarket> getCallMarkets() {
+        List<OptionMarket> myOptionList = new LinkedList<OptionMarket>();
         for (Market myMarket : theCallList) {
-            showOption(myMarket);
+            myOptionList.add((OptionMarket)myMarket);
         }
-        System.out.print("\n");
-        System.out.print("Put:\n");
-        for (Market myMarket : thePutList) {
-            showOption(myMarket);
-        }
-        System.out.print("\n\n");
+        return myOptionList;
     }
-
-    private void showOption(Market myMarket) {
-        OptionMarket myOptionMarket = (OptionMarket) myMarket;
-
-        System.out.println(myOptionMarket.getStrike() + ": Bid-Ask: "
-                + myOptionMarket.getBid().getPrice() + " - "
-                + myOptionMarket.getAsk().getPrice() + ", Last: "
-                + myOptionMarket.getPrice() + ", Change: "
-                + myOptionMarket.getChange() + ", Qty: "
-                + myOptionMarket.getQuantity() + ", OpInt: "
-                + myOptionMarket.getOpenInterest() + ", Expry: "
-                + myOptionMarket.getExpiry() + "\n" + "Theoretical: "
-                + BlackScholesOptionPricer.getOptionPrice(this, myOptionMarket)
-                + ", Delta: "
-                + BlackScholesOptionPricer.getDelta(this, myOptionMarket)
-                + ", Gamma: "
-                + BlackScholesOptionPricer.getGamma(this, myOptionMarket)
-                + ", Vega: "
-                + BlackScholesOptionPricer.getVega(this, myOptionMarket));
+    
+    public List<OptionMarket> getPutMarkets() {
+        List<OptionMarket> myOptionList = new LinkedList<OptionMarket>();
+        for (Market myMarket : thePutList) {
+            myOptionList.add((OptionMarket)myMarket);
+        }
+        return myOptionList;
     }
 }
